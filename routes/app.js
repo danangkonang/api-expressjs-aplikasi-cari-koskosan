@@ -44,6 +44,8 @@ const ControllersRoom = require('../controllers/rooms')
 const ControllersUser = require('../controllers/users')
 const ControllersBooking = require('../controllers/booking')
 
+app.get('/', (req, res) => res.send('Hello Danang'))
+
 app.group("/api/v1",(router)=>{
     router.get('/rooms', ControllersRoom.index)
     router.get('/room/:id', ControllersRoom.show)
