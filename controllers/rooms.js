@@ -42,15 +42,15 @@ exports.store=(req, res)=>{
         price,
     } = req.body
 
-    // upload(req, res, (err) => {
-    //     if(err){
-    //             res.send({"message":"error db file"})
-    //         } else {
-    //         if(req.files == undefined){
-    //             res.send({"message":"file undefined"})
-    //         } else {
-    //             const imageName1 = req.files[0].fieldname
-    //             const imageName2 = req.files[1].fieldname
+    upload(req, res, (err) => {
+        if(err){
+                res.send({"message":"error db file"})
+            } else {
+            if(req.files == undefined){
+                res.send({"message":"file undefined"})
+            } else {
+                const imageName1 = req.files[0].fieldname
+                const imageName2 = req.files[1].fieldname
                 Room.create({
                     name: name,
                     address: address,
@@ -59,10 +59,10 @@ exports.store=(req, res)=>{
                     userId: userId,
                     management: management,
                     phoneManagement:phoneManagement,
-                    // images:{
-                    //     imageName1,
-                    //     imageName2
-                    // },
+                    images:{
+                        imageName1,
+                        imageName2
+                    },
                     long:long,
                     wide:wide,
                     price:price
@@ -70,11 +70,11 @@ exports.store=(req, res)=>{
                  .catch(err => res.send(err))
                 // res.send({"message":"sukses"})
             }   
-//         }
-//     })
+        }
+    })
 
     
-//  }
+ }
 
 exports.update=(req, res)=>{
     const {
@@ -149,7 +149,33 @@ exports.delete=(req, res)=>{
 
 
 
-
+exports.input = (req, res) => {
+        const {
+            name,
+            address,
+            logitude,
+            lotitude,
+            userId,
+            management,
+            phoneManagement,
+            long,
+            wide,
+            price,} = req.body
+        Room.create({
+            name: name,
+            address: address,
+            logitude:logitude,
+            lotitude:lotitude,
+            userId: userId,
+            management: management,
+            phoneManagement:phoneManagement,
+            long:long,
+            wide:wide,
+            price:price
+        }).then(room=> res.send(room))
+        .catch(err => res.send(err))
+        //res.send({"tes":"ting"})
+    }
 
 
 
