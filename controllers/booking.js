@@ -20,5 +20,24 @@ exports.booking=(req, res)=>{
 }
 
 exports.upload=(req, res)=>{
-   
+   upload(req, res, (err) => {
+      if(err){
+         res.send({"message":"error db file"})
+      }else{
+         if(req.files == undefined){
+            res.send({"message":"file undefined"})
+         }else{
+            const imageName1 = req.files[0].fieldname
+            const imageName2 = req.files[1].fieldname
+            Room.create({
+               images:{
+                  imageName1,
+                  imageName2
+              }
+            })
+            .then(room=> res.send(room))
+            .catch(err => res.send(err))
+         }
+      }
+   })
 }

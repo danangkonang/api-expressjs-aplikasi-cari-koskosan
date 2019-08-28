@@ -144,11 +144,6 @@ exports.delete=(req, res)=>{
     
 }
 
-
-
-
-
-
 exports.input = (req, res) => {
         const {
             name,
@@ -176,60 +171,3 @@ exports.input = (req, res) => {
         .catch(err => res.send(err))
         //res.send({"tes":"ting"})
     }
-
-
-
-
-
-
-
-
-
-
-// //data semua kamar
-// exports.index = (req, res) => {
-//     Room.findAll({
-//         attributes: ['id', 'name','address']
-//     }).then(rooms=>res.send(rooms))
-// }
-//ambil detail by id
-
-// ambil semua data kamar
-// exports.index = (req, res) => {
-//     connection.query('SELECT * FROM room', (err, rows)=> {
-//         if (err) throw err
-      
-//         res.send(rows)
-//     })    
-// }
-
-//ambil detail by id
-// exports.show = (req, res) => {
-//     connection.query(`SELECT * FROM room WHERE id=${req.params.id}`, (err, rows)=> {
-//         if (err) throw err
-      
-//         res.send(rows[0])
-//     })
-// }
-
-//input data kamar
-// exports.store = (req, res) => {
-//     const { name, address, longitude,latitude,cover,user_id } = req.body    
-
-//     connection.query(`INSERT INTO room (name,address,longitude,latitude,cover,user_id) VALUES ('${name}', '${address}', '${longitude}', '${latitude}', '${cover}', ${user_id})`, (err)=> {
-//         if (err) throw err
-//     })    
-
-//     res.send({
-//         success: true,
-//         data: req.body
-//     })
-// }
-
-// exports.update = (req, res) => {
-//     //DO IT YOURSELF - MINI QUIZ
-// }
-
-// exports.delete = (req, res) => {
-//     //DO IT YOURSELF - MINI QUIZ
-// }
