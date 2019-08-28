@@ -8,15 +8,17 @@ const multer = require('multer')
 const app = express()
 const path = require('path')
 
+app.use("/public", express.static(path.join(__dirname, 'public')));
+
 const storage = multer.diskStorage({
-   destination: './images/rooms',
+   destination: './public/image',
    filename: function(req, file, cb){
        cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname))
    }
 });
 
 var upload = multer({storage: storage});
-var uploadimg = upload.array('userPhoto',2)
+var uploadimg = upload.single('userPhoto')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -49,12 +51,12 @@ app.post('/input', (req, res) => {
       if(err){
               res.send({"message":"error db file"})
           } else {
-          if(req.files == undefined){
+          if(req.file == undefined){
               res.send({"message":"file undefined"})
           } else {
-              const imageName1 = req.files[0].path
-              const imageName2 = req.files[1].path
-              const totalImages = imageName1+ "," +imageName2
+            //   const imageName1 = req.file[0].path
+            //   const imageName2 = req.files[1].path
+            //   const totalImages = imageName1+ " ," +imageName2
               Room.create({
                   name: req.body.name,
                   address: req.body.address,
@@ -63,7 +65,7 @@ app.post('/input', (req, res) => {
                   userId: req.body.userId,
                   management: req.body.management,
                   phoneManagement: req.body.phoneManagement,
-                  images: totalImages,
+                  images: req.file.path,
                   long: req.body.long,
                   wide: req.body.wide,
                   price: req.body.price
