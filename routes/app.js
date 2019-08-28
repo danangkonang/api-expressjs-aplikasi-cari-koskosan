@@ -8,7 +8,7 @@ const multer = require('multer')
 const app = express()
 const path = require('path')
 
-app.use("/public", express.static(path.join(__dirname, 'public')));
+// app.use("/public", express.static(path.join(__dirname, 'public')));
 
 const storage = multer.diskStorage({
    destination: './public/image',
