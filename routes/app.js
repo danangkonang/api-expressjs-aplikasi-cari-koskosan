@@ -44,7 +44,7 @@ app.group("/user", (router) => {
 
 app.get('/', (req, res) => res.send('Hello Danang'))
 
-app.post('/input',verifyToken, (req, res) => {
+app.post('/input', (req, res) => {
    uploadimg(req, res, (err) => {
       if(err){
               res.send({"message":"error db file"})
