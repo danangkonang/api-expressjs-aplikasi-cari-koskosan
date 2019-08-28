@@ -23,7 +23,7 @@ var uploadimg = upload.single('userPhoto')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// app.use(express.static('public'))
+app.use(express.static('public'))
 
 const ControllersRoom = require('../controllers/rooms')
 const ControllersUser = require('../controllers/users')
