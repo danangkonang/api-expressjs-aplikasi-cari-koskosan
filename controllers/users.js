@@ -46,6 +46,7 @@ exports.login =(req,res)=>{
 
 exports.registrasi=(req,res)=>{
     const { email,password } = req.body
+    
     bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
             User.create({
@@ -54,13 +55,14 @@ exports.registrasi=(req,res)=>{
             }).then((user)=>{
                 jwt.sign({ email:email }, 'secret_key',(err,token)=>{
                     res.send({
-                        id:user[0].id,
-                        email:user[0].email,
+                        id:user.id,
+                        email:user.email,
                         token:token
                     })
                 })
             })
             .catch(err => res.send(err))
+            
         })
     })
 }
