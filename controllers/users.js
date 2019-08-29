@@ -10,7 +10,7 @@ const Room = models.room
 exports.index=(req, res)=>{
     User.findAll({
         attributes: ['id', 'email','password']
-    }).then(rooms=>res.send(users))
+    }).then(users=>res.send(users))
 }
 
 exports.delete=(req, res)=>{
