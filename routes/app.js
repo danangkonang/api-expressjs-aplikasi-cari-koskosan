@@ -8,10 +8,10 @@ const multer = require('multer')
 const app = express()
 const path = require('path')
 
-app.use("/public/public/image", express.static(path.join(__dirname, 'public')));
+app.use("/public", express.static(path.join(__dirname, 'public')));
 
 const storage = multer.diskStorage({
-   destination: './public/public/image',
+   destination: './public/image',
    filename: function(req, file, cb){
        cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname))
    }
@@ -88,7 +88,5 @@ function verifyToken(req, res, next){
         res.sendStatus(404);
     }
 }
-
-
 
 module.exports = app;
