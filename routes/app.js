@@ -8,7 +8,7 @@ const multer = require('multer')
 const app = express()
 const path = require('path')
 
-app.use("/public", express.static(path.join(__dirname, 'public')));
+// app.use("/public", express.static(path.join(__dirname, 'public')));
 
 const storage = multer.diskStorage({
    destination: './public/image',
@@ -23,7 +23,7 @@ var uploadimg = upload.single('userPhoto')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// app.use(express.static('public'))
+app.use(express.static('public'))
 
 const ControllersRoom = require('../controllers/rooms')
 const ControllersUser = require('../controllers/users')
