@@ -8,7 +8,7 @@ const multer = require('multer')
 const app = express()
 const path = require('path')
 
-app.use("/public", express.static(path.join(__dirname, 'public')));
+// app.use("/public", express.static(path.join(__dirname, 'public')));
 
 const storage = multer.diskStorage({
    destination: './public/image',
@@ -35,6 +35,11 @@ app.group("/api/v1",(router)=>{
     router.post('/room',verifyToken, ControllersRoom.store)
     router.patch('/room/:id',verifyToken, ControllersRoom.update)    
     router.delete('/room/:id', ControllersRoom.delete)
+<<<<<<< HEAD
+=======
+    router.get('/users', ControllersUser.index)
+    router.delete('/user/:id', ControllersUser.delete)
+>>>>>>> 5263124473b4dbe9188d5d95d730ba91bcf8a60c
 })
 
 app.group("/user", (router) => {
@@ -89,7 +94,5 @@ function verifyToken(req, res, next){
         res.sendStatus(404);
     }
 }
-
-
 
 module.exports = app;

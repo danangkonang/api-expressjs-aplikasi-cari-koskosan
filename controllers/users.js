@@ -7,6 +7,26 @@ const models = require('../models')
 const User = models.user
 const Room = models.room
 
+exports.index=(req, res)=>{
+    User.findAll({
+        attributes: ['id', 'email','password']
+    }).then(users=>res.send(users))
+}
+
+exports.delete=(req, res)=>{
+    User.destroy({
+        where: {
+          id: req.params.id
+        }
+      })
+        .then(() => {
+          res.send(`Data with id ${req.params.id} success deleted`);
+        })
+        .catch(err => {
+          res.send(err.message)
+        })
+}
+
 exports.login =(req,res)=>{
     const { email,password } = req.body
     User.findAll({
