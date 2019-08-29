@@ -141,10 +141,6 @@ exports.delete=(req, res)=>{
         .catch(err => {
           res.send(err.message)
         })
-<<<<<<< HEAD
-    // res.send({tes:req.params.id})
-=======
->>>>>>> 5263124473b4dbe9188d5d95d730ba91bcf8a60c
 }
 
 exports.input = (req, res) => {
