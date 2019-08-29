@@ -141,7 +141,7 @@ exports.delete=(req, res)=>{
         .catch(err => {
           res.send(err.message)
         })
-    
+    // res.send({tes:req.params.id})
 }
 
 exports.input = (req, res) => {

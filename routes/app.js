@@ -34,7 +34,7 @@ app.group("/api/v1",(router)=>{
     router.get('/room/:id', ControllersRoom.show)
     router.post('/room',verifyToken, ControllersRoom.store)
     router.patch('/room/:id',verifyToken, ControllersRoom.update)    
-    router.delete('/room/:id',verifyToken, ControllersRoom.delete)
+    router.delete('/room/:id', ControllersRoom.delete)
 })
 
 app.group("/user", (router) => {
@@ -57,6 +57,7 @@ app.post('/input', (req, res) => {
             //   const imageName1 = req.file[0].path
             //   const imageName2 = req.files[1].path
             //   const totalImages = imageName1+ " ," +imageName2
+            // res.send(req.file.fieldname)
               Room.create({
                   name: req.body.name,
                   address: req.body.address,
@@ -65,7 +66,7 @@ app.post('/input', (req, res) => {
                   userId: req.body.userId,
                   management: req.body.management,
                   phoneManagement: req.body.phoneManagement,
-                  images: req.file.path,
+                  images: req.file.filename,
                   long: req.body.long,
                   wide: req.body.wide,
                   price: req.body.price
