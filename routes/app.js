@@ -13,12 +13,12 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
 const storage = multer.diskStorage({
    destination: './public/image',
    filename: function(req, file, cb){
-       cb(null,file.fieldname + Date.now() + path.extname(file.originalname))
+       cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname))
    }
 });
 
 var upload = multer({storage: storage});
-var uploadimg = upload.single('img')
+var uploadimg = upload.single('userPhoto')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
