@@ -130,18 +130,18 @@ exports.update=(req, res)=>{
 }
 
 exports.delete=(req, res)=>{
-    Room.destroy({
-        where: {
-          id: req.params.id
-        }
-      })
-        .then(() => {
-          res.send(`Data with id ${req.params.id} success deleted`);
-        })
-        .catch(err => {
-          res.send(err.message)
-        })
-    
+//     Room.destroy({
+//         where: {
+//           id: req.params.id
+//         }
+//       })
+//         .then(() => {
+//           res.send(`Data with id ${req.params.id} success deleted`);
+//         })
+//         .catch(err => {
+//           res.send(err.message)
+//         })
+    res.send(req.params.id)
 }
 
 exports.input = (req, res) => {
