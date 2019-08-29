@@ -35,6 +35,7 @@ app.group("/api/v1",(router)=>{
     router.post('/room',verifyToken, ControllersRoom.store)
     router.patch('/room/:id',verifyToken, ControllersRoom.update)    
     router.delete('/room/:id', ControllersRoom.delete)
+    router.get('/users', ControllersUser.index)
 })
 
 app.group("/user", (router) => {
