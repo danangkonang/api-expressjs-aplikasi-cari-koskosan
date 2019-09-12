@@ -30,7 +30,7 @@ exports.delete=(req, res)=>{
 exports.login =(req,res)=>{
     const { email,password } = req.body
     User.findAll({
-        attributes: ['id','email', 'password'],
+        attributes: ['id','email', 'password','name'],
         where: {
             email: email
           }
@@ -39,6 +39,8 @@ exports.login =(req,res)=>{
             const passwordHansed = data[0].password
             const dataId = data[0].id
             const dataEmail = data[0].email
+            const dataName = data[0].name
+            // console.log(data)
             bcrypt.compare(password, passwordHansed, function(error, respose) {
                 if(error){
                     console.log(error)
@@ -49,6 +51,7 @@ exports.login =(req,res)=>{
                         res.send({
                             id:dataId,
                             email:dataEmail,
+                            name:dataName,
                             token:token
                         })
                     })
@@ -64,19 +67,22 @@ exports.login =(req,res)=>{
     })
 }
 
+
 exports.registrasi=(req,res)=>{
-    const { email,password } = req.body
+    const { email,password,name } = req.body
     
     bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
             User.create({
                 email: email,
+                name: name,
                 password: hash
             }).then((user)=>{
                 jwt.sign({ email:email }, 'secret_key',(err,token)=>{
                     res.send({
                         id:user.id,
                         email:user.email,
+                        name: user.name,
                         token:token
                     })
                 })
@@ -87,7 +93,19 @@ exports.registrasi=(req,res)=>{
     })
 }
 
-
+exports.getById = (req,res)=>{
+    // res.send('testing')
+    // console.log(req.params)
+    User.findAll({
+        attributes: ['id','email','name'],
+        where: {
+            id: req.params.id
+          }
+    }).then((data)=>{
+        res.send(data)
+        // console.log(data)
+    })
+}
 
 
 
