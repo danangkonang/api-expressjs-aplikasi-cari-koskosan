@@ -26,10 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 const ControllersRoom = require('../controllers/rooms')
+const ControllersEmail = require('../controllers/email')
 const ControllersUser = require('../controllers/users')
 const ControllersBooking = require('../controllers/booking')
 
 app.group("/api/v1",(router)=>{
+    router.get('/email', ControllersEmail.index)
     router.get('/rooms', ControllersRoom.index)
     router.get('/room/:id', ControllersRoom.show)
     router.post('/room',verifyToken, ControllersRoom.store)
