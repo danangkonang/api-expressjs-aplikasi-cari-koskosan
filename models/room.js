@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const room = sequelize.define('room', {
     name: DataTypes.STRING,
@@ -11,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     images: DataTypes.STRING,
     long: DataTypes.INTEGER,
     wide: DataTypes.INTEGER,
-    price: DataTypes.INTEGER
+    price: DataTypes.INTEGER,
   }, {});
-  room.associate = function(models) {
+  room.associate = function (models) {
     // associations can be defined here
     room.belongsTo(models.user, {
       as: 'user',
       foreignKey: 'userId',
-    })
+    });
   };
   return room;
 };

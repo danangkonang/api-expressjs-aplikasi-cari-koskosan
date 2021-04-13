@@ -1,130 +1,110 @@
-//const connection = require('../db')
-const jwt = require('jsonwebtoken')
+// const connection = require('../db')
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
 const saltRounds = 10;
 
-const models = require('../models')
-const User = models.user
-const Room = models.room
+const models = require('../models');
 
-exports.index=(req, res)=>{
-    User.findAll({
-        attributes: ['id', 'email','password']
-    }).then(users=>res.send(users))
-}
+const User = models.user;
 
-exports.delete=(req, res)=>{
-    User.destroy({
-        where: {
-          id: req.params.id
+exports.index = (req, res) => {
+  User.findAll({
+    attributes: ['id', 'email', 'password'],
+  }).then((users) => res.send(users));
+};
+
+exports.delete = (req, res) => {
+  User.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then(() => {
+      res.send(`Data with id ${req.params.id} success deleted`);
+    })
+    .catch((err) => {
+      res.send(err.message);
+    });
+};
+
+exports.login = (req, res) => {
+  const { email, password } = req.body;
+  User.findAll({
+    attributes: ['id', 'email', 'password', 'name'],
+    where: {
+      email,
+    },
+  }).then((data) => {
+    if (data.length > 0) {
+      const passwordHansed = data[0].password;
+      const dataId = data[0].id;
+      const dataEmail = data[0].email;
+      const dataName = data[0].name;
+      // console.log(data)
+      bcrypt.compare(password, passwordHansed, (error, respose) => {
+        if (error) {
+          // console.log(error);
+          res.send({ succes: false, message: 'error ferivy' });
         }
+        if (respose === true) {
+          jwt.sign({ email }, 'secret_key', (err, token) => {
+            res.send({
+              id: dataId,
+              email: dataEmail,
+              name: dataName,
+              token,
+            });
+          });
+        } else {
+          res.send({
+            message: 'password salah',
+          });
+        }
+      });
+    } else {
+      res.send({ succes: false, message: 'email not found' });
+    }
+  });
+};
+
+exports.registrasi = (req, res) => {
+  const { email, password } = req.body;
+
+  bcrypt.genSalt(saltRounds, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hash) => {
+      User.create({
+        email,
+        // name,
+        password: hash,
+      }).then((user) => {
+        jwt.sign({ email }, 'secret_key', (err, token) => {
+          res.send({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            token,
+          });
+        });
       })
-        .then(() => {
-          res.send(`Data with id ${req.params.id} success deleted`);
-        })
-        .catch(err => {
-          res.send(err.message)
-        })
-}
+        .catch((error) => res.send(error));
+    });
+  });
+};
 
-exports.login =(req,res)=>{
-    const { email,password } = req.body
-    User.findAll({
-        attributes: ['id','email', 'password','name'],
-        where: {
-            email: email
-          }
-    }).then((data)=>{
-        if(data.length > 0){
-            const passwordHansed = data[0].password
-            const dataId = data[0].id
-            const dataEmail = data[0].email
-            const dataName = data[0].name
-            // console.log(data)
-            bcrypt.compare(password, passwordHansed, function(error, respose) {
-                if(error){
-                    console.log(error)
-                    res.send({'succes':false,'message':'error ferivy'})
-                }
-                if(respose == true){
-                    jwt.sign({ email:email }, 'secret_key',(err,token)=>{
-                        res.send({
-                            id:dataId,
-                            email:dataEmail,
-                            name:dataName,
-                            token:token
-                        })
-                    })
-                }else{
-                    res.send({
-                        message:"password salah"
-                    })
-                }
-            })
-        }else{
-            res.send({'succes':false,'message':'email not found'})
-        }
-    })
-}
-
-
-exports.registrasi=(req,res)=>{
-    const { email,password,name } = req.body
-    
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-        bcrypt.hash(password, salt, function(err, hash) {
-            User.create({
-                email: email,
-                name: name,
-                password: hash
-            }).then((user)=>{
-                jwt.sign({ email:email }, 'secret_key',(err,token)=>{
-                    res.send({
-                        id:user.id,
-                        email:user.email,
-                        name: user.name,
-                        token:token
-                    })
-                })
-            })
-            .catch(err => res.send(err))
-            
-        })
-    })
-}
-
-exports.getById = (req,res)=>{
-    // res.send('testing')
-    // console.log(req.params)
-    User.findAll({
-        attributes: ['id','email','name'],
-        where: {
-            id: req.params.id
-          }
-    }).then((data)=>{
-        res.send(data)
-        // console.log(data)
-    })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+exports.getById = (req, res) => {
+  // res.send('testing')
+  // console.log(req.params)
+  User.findAll({
+    attributes: ['id', 'email', 'name'],
+    where: {
+      id: req.params.id,
+    },
+  }).then((data) => {
+    res.send(data);
+    // console.log(data)
+  });
+};
 
 // exports.tambah = (req, res) => {
 //     const {name, email, password, phone} = req.body
@@ -181,18 +161,16 @@ exports.getById = (req,res)=>{
 //                 }
 //             })
 //       }
-    
+
 // }
 
-
-
 // exports.register = (req, res) => {
-//     const { email,password } = req.body 
-    
+//     const { email,password } = req.body
+
 //     bcrypt.genSalt(saltRounds, function(err, salt) {
 //         bcrypt.hash(password, salt, function(err, hash) {
-            
-//             connection.query(`INSERT INTO users (email,password) VALUES ('${email}', '${hash}')`, (err)=> {
+
+// connection.query(`INSERT INTO users (email,password) VALUES ('${email}', '${hash}')`, (err)=> {
 //                 if (err) throw err
 //                 res.send({
 //                     success: true,
@@ -202,7 +180,6 @@ exports.getById = (req,res)=>{
 //         });
 //     });
 // }
-
 
 // exports.verify =(req, res)=> {
 
@@ -228,11 +205,10 @@ exports.getById = (req,res)=>{
 //         }else{
 //             connection.query('SELECT * FROM users', (err, rows)=> {
 //                 if (err) throw err
-              
+
 //                 res.send(authData)
-//             })  
+//             })
 //         }
 //     })
-      
-// }
 
+// }
